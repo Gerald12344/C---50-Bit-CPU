@@ -55,6 +55,7 @@ void GPU::update(int opcode, int operand)
 
     if (opcode == 0b00010011)
     {
+        return;
         std::string text = "";
 
         for (int i = 0; i < screensize; i++)
