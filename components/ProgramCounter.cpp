@@ -5,15 +5,24 @@
 #include <iostream>
 
 extern int DataBus;
+extern int PC_COUNTER;
 
 void ProgramCounter::update(int opcode, int operand)
 {
 
+    if (opcode == 0b00001000)
+    {
+        int newVal = ProgramCounter::PC_REG.getValue() + 1;
+        ProgramCounter::PC_REG.setValue(newVal);
+        PC_COUNTER = newVal;
+    }
+
     if (opcode == 0b00000100)
     {
         Logger("Incrementing PC");
-
-        ProgramCounter::PC_REG.setValue(ProgramCounter::PC_REG.getValue() + 1);
+        int newVal = ProgramCounter::PC_REG.getValue() + 1;
+        ProgramCounter::PC_REG.setValue(newVal);
+        PC_COUNTER = newVal;
     }
 
     if (opcode == 0b00000010)
@@ -30,5 +39,6 @@ void ProgramCounter::update(int opcode, int operand)
     {
         Logger("JUMP PC to: " + std::to_string(operand));
         ProgramCounter::PC_REG.setValue(operand);
+        PC_COUNTER = operand;
     }
 }

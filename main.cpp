@@ -13,12 +13,14 @@
 #include "components/RAM.h"
 #include "components/GPU.h"
 #include <sys/time.h>
+#include <future>
 
 using namespace std;
 
 // ----------CONFIG----------
 int BIT_WIDTH = 50;
 bool DEBUG = false;
+int PC_COUNTER = 0;
 
 // ----------FLAGS-----------
 bool HLT = false;
@@ -65,13 +67,62 @@ GPU GPU_COMP(GPX, GPY, GPC);
 
 void updateComponents(int opcode, int operand, std::string info)
 {
-
-    ALU_COMP.update(opcode, operand);
-    GEN_COMP.update(opcode, operand);
-    PC_COMP.update(opcode, operand);
-    OUT_COMP.update(opcode, operand);
-    RAM_COMP.update(opcode, operand);
-    GPU_COMP.update(opcode, operand);
+    switch (opcode)
+    {
+    case 0b00000001:
+        ALU_COMP.update(opcode, operand);
+        GEN_COMP.update(opcode, operand);
+        OUT_COMP.update(opcode, operand);
+        RAM_COMP.update(opcode, operand);
+        break;
+    case 0b00000010:
+        ALU_COMP.update(opcode, operand);
+        GEN_COMP.update(opcode, operand);
+        RAM_COMP.update(opcode, operand);
+        GPU_COMP.update(opcode, operand);
+        PC_COMP.update(opcode, operand);
+        break;
+    case 0b00000100:
+        PC_COMP.update(opcode, operand);
+        break;
+    case 0b00000101:
+        PC_COMP.update(opcode, operand);
+        break;
+    case 0b00000110:
+        OUT_COMP.update(opcode, operand);
+        break;
+    case 0b00001000:
+        RAM_COMP.update(opcode, operand);
+        PC_COMP.update(opcode, operand);
+        break;
+    case 0b00001001:
+        GEN_COMP.update(opcode, operand);
+        break;
+    case 0b00001011:
+        GEN_COMP.update(opcode, operand);
+        break;
+    case 0b00001100:
+        GEN_COMP.update(opcode, operand);
+        break;
+    case 0b00001101:
+        ALU_COMP.update(opcode, operand);
+        break;
+    case 0b00001110:
+        ALU_COMP.update(opcode, operand);
+        break;
+    case 0b00001111:
+        RAM_COMP.update(opcode, operand);
+        break;
+    case 0b00010000:
+        RAM_COMP.update(opcode, operand);
+        break;
+    case 0b00010001:
+        GEN_COMP.update(opcode, operand);
+        break;
+    case 0b00010010:
+        GEN_COMP.update(opcode, operand);
+        break;
+    }
 }
 
 void flagHandler(int data)
@@ -84,33 +135,31 @@ void flagHandler(int data)
     COMP = false;
     AND = false;
 
-    if (data == 0b00000000)
+    switch (data)
     {
+    case 0b00000000:
         ADD = true;
-    }
-    else if (data == 0b00000001)
-    {
+        break;
+    case 0b00000001:
         SUB = true;
-    }
-    else if (data == 0b00000010)
-    {
+        break;
+    case 0b00000010:
         MUL = true;
-    }
-    else if (data == 0b00000011)
-    {
+        break;
+    case 0b00000011:
         DIV = true;
-    }
-    else if (data == 0b00000100)
-    {
+        break;
+    case 0b00000100:
         MOD = true;
-    }
-    else if (data == 0b00000101)
-    {
+        break;
+    case 0b00000101:
         COMP = true;
-    }
-    else if (data == 0b00000110)
-    {
+        break;
+    case 0b00000110:
         AND = true;
+        break;
+    default:
+        break;
     }
 
     ALU_COMP.calculate();
@@ -144,6 +193,8 @@ void clockPulse()
 
     updateComponents(opcode, operand, "N/A");
 
+    cout << "Opcode: " << opcode << endl;
+
     if (opcode == 0)
     {
         HLT = true;
@@ -158,6 +209,33 @@ void clockPulse()
     Logger("----------------");
 }
 
+void fasterPulse()
+{
+    updateComponents(0b00001000, 0, "N/A");
+
+    // Data Bus --> Control Unit
+    int opcode = DataBus >> (BIT_WIDTH / 2);
+    int operand = DataBus & (int)std::pow(2, BIT_WIDTH / 2) - 1;
+
+    // -----Decode----- \\
+
+
+    // -----Execute----- \\
+
+    updateComponents(opcode, operand, "N/A");
+
+    switch (opcode)
+    {
+    case 0b00000111:
+        flagHandler(operand);
+        break;
+    case 0:
+        HLT = true;
+        Logger("PROGRAM HALTED");
+        break;
+    }
+}
+
 long int getMS()
 {
     struct timeval tp;
@@ -169,12 +247,14 @@ long int getMS()
 
 int main()
 {
-    std::array<int, 100000> RAM_INTERAL = {301989990, 402653194, 301990288, 402653192, 503316480, 536870912, 369098761, 402653187,
-                                           301989889, 402653188, 234881025, 536870912, 369098761, 402653187, 369098757, 402653192,
-                                           402653191, 503316480, 402653195, 369098765, 402653187, 301989889, 402653188, 234881024,
-                                           369098757, 402653191, 402653197, 570425344, 536870912, 369098761, 234881024, 402653187,
-                                           301989888, 402653188, 436207652, 167772165, 369098764, 402653187, 234881024, 301989889,
-                                           402653188, 369098757, 402653196, 637534208, 167772160, 0};
+    std::array<int, 100000> RAM_INTERAL = {301990289, 402653194, 301990288, 402653192, 503316480, 301989990, 402653194, 503316480,
+                                           536870912, 369098761, 402653187, 301989889, 402653188, 234881025, 536870912, 369098761,
+                                           402653187, 369098757, 402653192, 402653191, 503316480, 402653195, 369098765, 402653187,
+                                           301989889, 402653188, 234881024, 369098757, 402653191, 402653197, 570425344, 536870912,
+                                           369098761, 234881024, 402653187, 301989888, 402653188, 436207655, 167772165, 369098764,
+                                           402653187, 234881024, 301989889, 402653188, 369098757, 402653196, 301990289, 402653194,
+                                           536870912, 369098761, 402653187, 301989889, 402653188, 234881025, 369098757, 402653192,
+                                           503316480, 436207675, 167772168, 637534208, 0};
     RAM_COMP.setRam(RAM_INTERAL);
 
     cout << "Starting Program" << endl;
@@ -192,11 +272,11 @@ int main()
         {
             int diff = getMS() - tempStart;
             float seconds = diff / 1000.0;
-            cout << "Time Taken: " << diff << "ms and operated at " << (intClicks / seconds) / pow(10, 6) << "MHz with a total of " << clicks << " clock cycles" << endl;
+            cout << "Time Taken: " << diff << "ms and operated at " << (intClicks / seconds) / pow(10, 6) << "MHz with a total of " << clicks << " clock cycles and the time per cycle is " << (seconds / intClicks) * pow(10, 9) << " nano seconds" << endl;
             intClicks = 0;
             tempStart = getMS();
         }
-        clockPulse();
+        fasterPulse();
     }
 
     long int end = getMS();
@@ -205,7 +285,7 @@ int main()
     int diff = end - start;
     float seconds = diff / 1000.0;
 
-    cout << "Time Taken: " << end - start << "ms and operated at " << (clicks / seconds) / pow(10, 6) << "MHz with a total of " << clicks << " clock cycles" << endl;
+    cout << "Time Taken: " << end - start << "ms and operated at " << (clicks / seconds) / pow(10, 6) << "MHz with a total of " << clicks << " clock cycles and each cycle took " << (seconds / clicks) * pow(10, 9) << " nano seconds" << endl;
 
     return 0;
 }

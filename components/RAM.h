@@ -12,6 +12,8 @@ private:
     Register ROR;
     Register RAR;
 
+    int RAM_SIZE;
+
     std::array<int, 100000> RAM_INTERAL;
 
 public:
@@ -22,6 +24,7 @@ public:
         RIR = RIR_Input;
         ROR = ROR_Input;
         RAR = RAR_Input;
+        RAM_SIZE = 100000;
     }
 
     void update(int opcode, int operand);

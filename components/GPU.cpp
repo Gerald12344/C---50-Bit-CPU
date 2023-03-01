@@ -5,9 +5,32 @@
 #include <iostream>
 #include <fstream>
 #include <array>
+#include <thread>
 
 extern int DataBus;
 int screensize = 400;
+
+void UpdateScreenBuffer(std::array<std::array<int, 400>, 400> screen)
+{
+    std::ofstream MyFile("filename.txt");
+    std::string text = "";
+
+    for (int i = 0; i < screensize; i++)
+    {
+        for (int j = 0; j < screensize; j++)
+        {
+            text += std::to_string(screen[i][j]) + ',';
+        }
+        text += "|";
+    }
+
+    // Write to the file
+    MyFile << text;
+
+    // Close the file
+
+    MyFile.close();
+}
 
 void GPU::update(int opcode, int operand)
 {
@@ -55,25 +78,10 @@ void GPU::update(int opcode, int operand)
 
     if (opcode == 0b00010011)
     {
-        return;
-        std::string text = "";
-
-        for (int i = 0; i < screensize; i++)
-        {
-            for (int j = 0; j < screensize; j++)
-            {
-                text += std::to_string(GPU::SCREEN[i][j]) + ',';
-            }
-            text += "|";
-        }
-
-        std::ofstream MyFile("filename.txt");
-
-        // Write to the file
-        MyFile << text;
-
-        // Close the file
-        MyFile.close();
+        UpdateScreenBuffer(GPU::SCREEN);
+        // std::thread first(UpdateScreenBuffer, GPU::SCREEN);
+        // first.detach();
+        //  std::future<void> fut = std::async(UpdateScreenBuffer, GPU::SCREEN);
     }
 
     if (opcode == 0b00010010)
