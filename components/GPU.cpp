@@ -73,6 +73,8 @@ void GPU::update(int opcode, int operand)
         if (GPU::GENX.getValue() > screensize - 1 || GPU::GENY.getValue() > screensize - 1 || GPU::GENX.getValue() < 0 || GPU::GENY.getValue() < 0)
             return;
 
+        std::cout << "X: " << GPU::GENX.getValue() << " Y: " << GPU::GENY.getValue() << " C: " << GPU::GENC.getValue() << std::endl;
+
         GPU::SCREEN[GPU::GENY.getValue()][GPU::GENX.getValue()] = GPU::GENC.getValue();
     }
 

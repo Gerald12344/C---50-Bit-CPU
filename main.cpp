@@ -5,7 +5,6 @@
 #include <cmath>
 #include "SubClasses/Register.h"
 #include "SubClasses/Logger.h"
-#include "ControlUnit.h"
 #include "components/ALU.h"
 #include "components/GeneralPurpose.h"
 #include "components/ProgramCounter.h"
@@ -19,7 +18,7 @@ using namespace std;
 
 // ----------CONFIG----------
 int BIT_WIDTH = 50;
-bool DEBUG = false;
+bool DEBUG = true;
 int PC_COUNTER = 0;
 
 // ----------FLAGS-----------
@@ -179,9 +178,9 @@ void clockPulse()
     int opcode = DataBus >> (BIT_WIDTH / 2);
     int operand = DataBus & (int)std::pow(2, BIT_WIDTH / 2) - 1;
 
-    Logger("Opcode: " + std::to_string(opcode));
-    Logger("Operand: " + std::to_string(operand));
-    Logger("Databus:" + std::to_string(DataBus));
+    // Logger("Opcode: " + std::to_string(opcode));
+    // Logger("Operand: " + std::to_string(operand));
+    // Logger("Databus:" + std::to_string(DataBus));
 
     // Increment PC
     updateComponents(0b00000100, 0, "N/A");
@@ -198,7 +197,7 @@ void clockPulse()
     if (opcode == 0)
     {
         HLT = true;
-        Logger("PROGRAM HALTED");
+        // Logger("PROGRAM HALTED");
     }
 
     if (opcode == 0b00000111)
@@ -206,7 +205,7 @@ void clockPulse()
         flagHandler(operand);
     }
 
-    Logger("----------------");
+    // Logger("----------------");
 }
 
 void fasterPulse()
@@ -231,7 +230,7 @@ void fasterPulse()
         break;
     case 0:
         HLT = true;
-        Logger("PROGRAM HALTED");
+        // Logger("PROGRAM HALTED");
         break;
     }
 }
@@ -247,14 +246,10 @@ long int getMS()
 
 int main()
 {
-    std::array<int, 100000> RAM_INTERAL = {301990289, 402653194, 301990288, 402653192, 503316480, 301989990, 402653194, 503316480,
-                                           536870912, 369098761, 402653187, 301989889, 402653188, 234881025, 536870912, 369098761,
-                                           402653187, 369098757, 402653192, 402653191, 503316480, 402653195, 369098765, 402653187,
-                                           301989889, 402653188, 234881024, 369098757, 402653191, 402653197, 570425344, 536870912,
-                                           369098761, 234881024, 402653187, 301989888, 402653188, 436207655, 167772165, 369098764,
-                                           402653187, 234881024, 301989889, 402653188, 369098757, 402653196, 301990289, 402653194,
-                                           536870912, 369098761, 402653187, 301989889, 402653188, 234881025, 369098757, 402653192,
-                                           503316480, 436207675, 167772168, 637534208, 0};
+    std::array<int, 100000> RAM_INTERAL = {301989988, 402653194, 100663296, 301992788, 402653192, 503316480, 100663296, 536870912,
+                                           369098761, 402653187, 100663296, 301989889, 402653188, 100663296, 234881025, 100663296,
+                                           536870912, 369098761, 402653187, 369098757, 402653192, 402653191, 201326592, 436207642,
+                                           503316480, 167772176, 0};
     RAM_COMP.setRam(RAM_INTERAL);
 
     cout << "Starting Program" << endl;

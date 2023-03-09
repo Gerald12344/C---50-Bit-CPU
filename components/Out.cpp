@@ -12,13 +12,15 @@ void Out::update(int opcode, int operand)
     {
         if (operand == 0b00000111)
         {
-            Logger("Setting OUT reg to databus value");
+            // Logger("Setting OUT reg to databus value");
             Out::OUT_REG.setValue(DataBus);
         }
     }
 
     if (opcode == 0b00000110)
     {
-        std::cout << Out::OUT_REG.getValue() << std::endl;
+        // std::cout << Out::OUT_REG.getValue() << std::endl;
+
+        printf("data: %d\n", Out::OUT_REG.getValue());
     }
 }

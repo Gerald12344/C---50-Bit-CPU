@@ -24,13 +24,13 @@ void ALU::update(int opcode, int operand)
     {
         if (operand == 0b00000011)
         {
-            Logger("Setting REG_A to: " + std::to_string(DataBus));
+            // Logger("Setting REG_A to: " + std::to_string(DataBus));
             ALU::REG_A.setValue(DataBus);
             ALU::calculate();
         }
         if (operand == 0b00000100)
         {
-            Logger("Setting REG_B to: " + std::to_string(DataBus));
+            // Logger("Setting REG_B to: " + std::to_string(DataBus));
             ALU::REG_B.setValue(DataBus);
             ALU::calculate();
         }
@@ -41,7 +41,7 @@ void ALU::update(int opcode, int operand)
 
         if (Zero == true)
         {
-            Logger("Jumping to: " + std::to_string(operand));
+            // Logger("Jumping to: " + std::to_string(operand));
 
             updateComponents(0b00000101, operand, "ALU");
         }
@@ -49,7 +49,7 @@ void ALU::update(int opcode, int operand)
 
     if (opcode == 0b00000010 && operand == 0b00000101)
     {
-        Logger("Setting data bus to ACC value " + std::to_string(ALU::ACC.getValue()));
+        // Logger("Setting data bus to ACC value " + std::to_string(ALU::ACC.getValue()));
         DataBus = ALU::ACC.getValue();
     }
 }

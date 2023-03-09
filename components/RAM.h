@@ -29,7 +29,7 @@ public:
 
     void update(int opcode, int operand);
 
-    void setRam(std::array<int, 100000> RAM_Input)
+        void setRam(std::array<int, 100000> RAM_Input)
     {
         RAM_INTERAL = RAM_Input;
 
