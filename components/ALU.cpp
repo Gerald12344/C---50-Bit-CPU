@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-extern int DataBus;
+extern unsigned int DataBus;
 
 extern bool HLT;
 extern bool ADD;
@@ -18,7 +18,7 @@ extern bool AND;
 extern bool Zero;
 extern bool Negative;
 
-void ALU::update(int opcode, int operand)
+void ALU::update(unsigned int opcode, unsigned int operand)
 {
     if (opcode == 0b00000001)
     {
@@ -34,6 +34,17 @@ void ALU::update(int opcode, int operand)
             ALU::REG_B.setValue(DataBus);
             ALU::calculate();
         }
+
+        if (operand == 0b00001110)
+        {
+            // Logger("Setting REG_C to: " + std::to_string(DataBus));
+            ALU::REG_C.setValue(DataBus);
+        }
+        if (operand == 0b00001111)
+        {
+            // Logger("Setting REG_C to: " + std::to_string(DataBus));
+            ALU::REG_D.setValue(DataBus);
+        }
     }
 
     if (opcode == 0b00001101)
@@ -47,19 +58,32 @@ void ALU::update(int opcode, int operand)
         }
     }
 
-    if (opcode == 0b00000010 && operand == 0b00000101)
+    if (opcode == 0b00000010)
     {
         // Logger("Setting data bus to ACC value " + std::to_string(ALU::ACC.getValue()));
-        DataBus = ALU::ACC.getValue();
+        if (operand == 0b00000101)
+        {
+            DataBus = ALU::ACC.getValue();
+        }
+        else if (operand == 0b00001110)
+        {
+
+            DataBus = ALU::REG_C.getValue();
+        }
+        else if (operand == 0b00001111)
+        {
+
+            DataBus = ALU::REG_D.getValue();
+        }
     }
 }
 
 void ALU::calculate()
 {
-    int a = ALU::REG_A.getValue();
-    int b = ALU::REG_B.getValue();
+    unsigned int a = ALU::REG_A.getValue();
+    unsigned int b = ALU::REG_B.getValue();
 
-    int result;
+    unsigned int result;
     if (SUB)
     {
         result = a - b;

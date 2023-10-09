@@ -10,7 +10,7 @@ void Logger(std::string inputData)
         std::cout << inputData << "\n";
     }
 }
-void LoggerNum(int inputData)
+void LoggerNum(unsigned int  inputData)
 {
     if (DEBUG)
     {

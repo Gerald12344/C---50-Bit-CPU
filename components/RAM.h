@@ -12,9 +12,9 @@ private:
     Register ROR;
     Register RAR;
 
-    int RAM_SIZE;
+    unsigned int RAM_SIZE;
 
-    std::array<int, 100000> RAM_INTERAL;
+    std::array<unsigned int, 42949672> RAM_INTERAL;
 
 public:
     RAM(Register MAR_Input, Register MDR_Input, Register RIR_Input, Register ROR_Input, Register RAR_Input) : MAR(MAR_Input), MDR(MDR_Input), RIR(RIR_Input), ROR(ROR_Input), RAR(RAR_Input)
@@ -24,16 +24,18 @@ public:
         RIR = RIR_Input;
         ROR = ROR_Input;
         RAR = RAR_Input;
-        RAM_SIZE = 100000;
+        RAM_SIZE = 42949672;
     }
 
-    void update(int opcode, int operand);
+    void print();
 
-        void setRam(std::array<int, 100000> RAM_Input)
+    void update(unsigned int opcode, unsigned int operand);
+
+    void setRam(std::array<unsigned int, 42949672> RAM_Input)
     {
         RAM_INTERAL = RAM_Input;
 
-        /* for (int i = 100 - 1; i >= 0; i--)
+        /* for (unsigned int i = 100 - 1; i >= 0; i--)
              std::cout << RAM_INTERAL[i] << ", "; */
     }
 };

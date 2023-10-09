@@ -13,5 +13,5 @@ public:
         GEN_REG = GEN_Input;
     }
 
-    void update(int opcode, int operand);
+    void update(unsigned int  opcode, unsigned int  operand);
 };

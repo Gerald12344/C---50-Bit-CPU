@@ -7,17 +7,17 @@
 #include <array>
 #include <thread>
 
-extern int DataBus;
-int screensize = 400;
+extern unsigned int DataBus;
+unsigned int screensize = 400;
 
 void UpdateScreenBuffer(std::array<std::array<int, 400>, 400> screen)
 {
     std::ofstream MyFile("filename.txt");
     std::string text = "";
 
-    for (int i = 0; i < screensize; i++)
+    for (unsigned int i = 0; i < screensize; i++)
     {
-        for (int j = 0; j < screensize; j++)
+        for (unsigned int j = 0; j < screensize; j++)
         {
             text += std::to_string(screen[i][j]) + ',';
         }
@@ -32,7 +32,7 @@ void UpdateScreenBuffer(std::array<std::array<int, 400>, 400> screen)
     MyFile.close();
 }
 
-void GPU::update(int opcode, int operand)
+void GPU::update(unsigned int opcode, unsigned int operand)
 {
     if (opcode == 0b00000001)
     {

@@ -4,9 +4,9 @@
 #include <string>
 #include <iostream>
 
-extern int DataBus;
+extern unsigned int DataBus;
 
-void Out::update(int opcode, int operand)
+void Out::update(unsigned int opcode, unsigned int operand)
 {
     if (opcode == 0b00000001)
     {
@@ -15,6 +15,12 @@ void Out::update(int opcode, int operand)
             // Logger("Setting OUT reg to databus value");
             Out::OUT_REG.setValue(DataBus);
         }
+    }
+
+    if (opcode == 0b00010011)
+    {
+        // Log value as char
+        printf("data: %c\n", (char)Out::OUT_REG.getValue());
     }
 
     if (opcode == 0b00000110)

@@ -1,3 +1,3 @@
 #include <string>
 
-void updateComponents(int opcode, int operand, std::string info);
+void updateComponents(unsigned int opcode, unsigned int operand, std::string info);

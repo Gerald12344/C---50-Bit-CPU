@@ -4,9 +4,9 @@
 #include <iostream>
 #include <string>
 
-extern int DataBus;
+extern unsigned int DataBus;
 
-void GEN::update(int opcode, int operand)
+void GEN::update(unsigned int opcode, unsigned int operand)
 {
     if (opcode == 0b00001011)
     {

@@ -4,7 +4,7 @@
 // Date constructor
 
 // Date member function
-void Register::setValue(int val)
+void Register::setValue(unsigned int val)
 {
     value = val;
 }

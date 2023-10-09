@@ -19,13 +19,13 @@ public:
         GENC = GENC_Input;
     }
 
-    void update(int opcode, int operand);
+    void update(unsigned int opcode, unsigned int operand);
 
     void setScreen(std::array<std::array<int, 400>, 400> RAM_Input)
     {
         SCREEN = RAM_Input;
 
-        /* for (int i = 100 - 1; i >= 0; i--)
+        /* for (unsigned int i = 100 - 1; i >= 0; i--)
              std::cout << RAM_INTERAL[i] << ", "; */
     }
 };

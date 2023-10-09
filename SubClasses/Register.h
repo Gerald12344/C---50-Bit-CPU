@@ -4,7 +4,7 @@
 class Register
 {
 private:
-    int value;
+    unsigned int  value;
     std::string friendlyName;
 
 public:
@@ -14,7 +14,7 @@ public:
         friendlyName = name;
     }
 
-    void setValue(int value);
+    void setValue(unsigned int  value);
 
-    int getValue() { return value; }
+    unsigned int  getValue() { return value; }
 };

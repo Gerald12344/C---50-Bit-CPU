@@ -13,5 +13,5 @@ public:
         OUT_REG = OUT_Input;
     }
 
-    void update(int opcode, int operand);
+    void update(unsigned int opcode, unsigned int operand);
 };

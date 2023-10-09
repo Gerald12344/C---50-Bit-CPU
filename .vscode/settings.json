@@ -26,7 +26,7 @@
     "atomic": "cpp",
     "bitset": "cpp",
     "cctype": "cpp",
-    "cinttypes": "cpp",
+    "cunsigned int types": "cpp",
     "clocale": "cpp",
     "cmath": "cpp",
     "compare": "cpp",
@@ -34,7 +34,7 @@
     "concepts": "cpp",
     "cstdarg": "cpp",
     "cstddef": "cpp",
-    "cstdint": "cpp",
+    "cstdunsigned int ": "cpp",
     "cstdio": "cpp",
     "cstdlib": "cpp",
     "cstring": "cpp",
@@ -69,6 +69,10 @@
     "variant": "cpp",
     "algorithm": "cpp",
     "fstream": "cpp",
-    "stack": "cpp"
+    "stack": "cpp",
+    "__verbose_abort": "cpp",
+    "bit": "cpp",
+    "thread": "cpp",
+    "cstdint": "cpp"
   }
 }
