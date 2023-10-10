@@ -59,7 +59,6 @@ void GPU::update(unsigned int opcode, unsigned int operand)
         }
         if (operand == 0b00001100)
         {
-
             DataBus = GPU::GENY.getValue();
         }
         if (operand == 0b00001101)
