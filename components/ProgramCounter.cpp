@@ -4,23 +4,29 @@
 #include <string>
 #include <iostream>
 
-extern unsigned int  DataBus;
-extern unsigned int  PC_COUNTER;
+extern unsigned int DataBus;
+extern unsigned int PC_COUNTER;
 
-void ProgramCounter::update(unsigned int  opcode, unsigned int  operand)
+void ProgramCounter::update(unsigned int opcode, unsigned int operand)
 {
 
     if (opcode == 0b00001000)
     {
-        unsigned int  newVal = ProgramCounter::PC_REG.getValue() + 1;
+        unsigned int newVal = ProgramCounter::PC_REG.getValue() + 1;
         ProgramCounter::PC_REG.setValue(newVal);
         PC_COUNTER = newVal;
+    }
+
+    if (opcode == 0b00000001 && operand == 0b00000010)
+    {
+        ProgramCounter::PC_REG.setValue(DataBus);
+        PC_COUNTER = DataBus;
     }
 
     if (opcode == 0b00000100)
     {
         // Logger("Incrementing PC");
-        unsigned int  newVal = ProgramCounter::PC_REG.getValue() + 1;
+        unsigned int newVal = ProgramCounter::PC_REG.getValue() + 1;
         ProgramCounter::PC_REG.setValue(newVal);
         PC_COUNTER = newVal;
     }
